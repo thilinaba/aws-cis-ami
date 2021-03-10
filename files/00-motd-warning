@@ -1,0 +1,19 @@
+#!/bin/sh
+cat << EOF
+
+-------------------------------------- WARNING --------------------------------------
+
+                This computer system is for authorized use only.
+
+By using this system, all users acknowledge notice of, and agree to comply with, the Company's 
+Acceptable Use of Information Technology Resources Policy (“AUP”). Unauthorized or improper use of 
+this system may result in administrative disciplinary action, civil charges/criminal penalties, 
+and/or other sanctions as set forth in the University’s AUP. By continuing to use this system you 
+indicate your awareness of and consent to these terms and conditions of use.
+
+
+LOG OFF IMMEDIATELY if you do not agree to the conditions stated in this warning.
+
+-------------------------------------------------------------------------------------
+
+EOF
