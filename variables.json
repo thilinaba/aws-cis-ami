@@ -1,7 +1,7 @@
 {
     "profile": "default",
-    "source_ami": "ami-03ca998611da0fe12",
     "region": "us-east-1",
+    "source_ami": "ami-03ca998611da0fe12",
     "vpc_id": "vpc-0428abcd1234",
     "subnet_id": "subnet-0123abcd4567",
     "instance_type": "t3.micro",
