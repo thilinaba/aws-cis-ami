@@ -1,10 +1,12 @@
-# This will build the required a CIS hardened AMI from Amazon Linux 2 base AMI
+# This will build a CIS Level 1 hardened AMI from Amazon Linux 2 base AMI
 
 # Validate the template
 #   eg: packer validate cis-ami.pkr.hcl 
 
-# Then run the packer build command with the correct profile name set in your ~/.aws/credentials
-#   eg: packer build cis-ami.pkr.hcl -var 'profile=aws-admin'
+# Set the correct variables in the variables.json file
+
+# A sample build command would look like this
+# packer build -var-file=variables.json cis-ami.pkr.hcl 
 
 # If you don't set the profile variable as above, it will take the following as default
 variable "profile" {
@@ -15,7 +17,6 @@ variable "profile" {
 # Use the Amazon Linux 2 (latest) AMI as the source_ami
 variable "source_ami" {
   type = string
-  default = "ami-0915bcb5fa77e4892"
 }
 
 
@@ -33,15 +34,17 @@ variable "instance_type" {
   default = "t3.micro"
 }
 
+variable "ami_name_prefix" {
+  type = string
+  default = "cis-hardened-aws-ami"
+}
 
 # Use the Amazon Linux 2 (latest) AMI as the source_ami
 locals { 
-  ami_name_prefix = "cis-hardened-aws-ami"
   timestamp = regex_replace(timestamp(), "[- TZ:]", "")
 
   standard_tags = {
-    Name   = "cis-hardened-aws-ami"
-    BaseAMI = "Amazon Linux 2"
+    BaseOS = "Amazon Linux 2"
   }
 
 }
@@ -58,13 +61,13 @@ source "amazon-ebs" "cis-ami" {
   associate_public_ip_address = "true"
 
   // Amazon Linux 2 AMI ID
-  source_ami    = "${local.source_ami}"
+  source_ami    = "${var.source_ami}"
   ssh_username  = "ec2-user"
 
   // Set the AMI's Name tag with timestamp
   tag {
     key         = "Name"
-    value       = "${local.ami_name_prefix}-${local.timestamp}"
+    value       = "${var.ami_name_prefix}-${local.timestamp}"
   }
 
   // Set the default tags for the AMI
