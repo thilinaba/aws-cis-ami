@@ -1,5 +1,5 @@
 # Building a CIS Hardened AMI on AWS for FREE
-## (Technical Documentation
+## (Technical Documentation)
 If you are new to Packer and AWS, Please refer to my [Blog Post](https://medium.com/cloud-life/building-a-cis-hardened-ami-on-aws-for-free-87b482b52ccb) for the beginer's guide for this repository and complete setting up the prerequisite. 
 
 ## Directory Structure
