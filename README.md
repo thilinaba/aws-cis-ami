@@ -64,7 +64,7 @@ These configurations will disable uncommon / vulnerable network protocols from t
 | install rds /bin/true | Disable `Reliable Datagram Sockets (RDS)`. |
 | install tipc /bin/true | Disable `Transparent Inter-Process Communication (TIPC)`. |
 
-( --  mode details to be added for the other files and scripts -- )
+( --  more details to be added for the other files and scripts -- )
 
 ## Building the AMI
 Once the prerequisite are completed according to the [Blog Post](https://medium.com/cloud-life/building-a-cis-hardened-ami-on-aws-for-free-87b482b52ccb), run the following commands to Validate and Build the AMI.
