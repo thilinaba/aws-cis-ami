@@ -1,3 +1,4 @@
+
 # Building a CIS Hardened AMI on AWS for FREE
 ## (Technical Documentation)
 If you are new to Packer and AWS, Please refer to my [Blog Post](https://medium.com/cloud-life/building-a-cis-hardened-ami-on-aws-for-free-87b482b52ccb) for the beginer's guide for this repository and complete setting up the prerequisite. 
@@ -37,7 +38,7 @@ Default value `$FileCreateMode 0600`
 
 
 ##### [cis-limits.conf](cis-limits.conf)
-This file [restricts code dumps](https://secscan.acron.pl/centos7/1/5/1) of the system.
+This file [restricts core dumps](https://secscan.acron.pl/centos7/1/5/1) of the system.
 
 
 ##### [cis-modprobe.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/cis-modprobe.conf)
@@ -64,7 +65,39 @@ These configurations will disable uncommon / vulnerable network protocols from t
 | install rds /bin/true | Disable `Reliable Datagram Sockets (RDS)`. |
 | install tipc /bin/true | Disable `Transparent Inter-Process Communication (TIPC)`. |
 
-( --  more details to be added for the other files and scripts -- )
+##### [cis-sysctl.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/cis-sysctl.conf)
+This file contains a set of kernel parameters which will secure system memory and network communications.
+
+Please note that the following networkng configurations (`net.ipv4`) are for IP version 4 protocol only. We use only IPv4 configurations here because we disabled IPv6 protocol from the system in above `cis-modprobe.conf` file. If you enable IPv6, make sure you add the relevant configs here in `cis-sysctl.conf`
+
+| Config | Definition |
+| ------ | ------ |
+| fs.suid_dumpable = 0 | Even though we disabled core dumps in `cis-limits.conf`, Programs with elevated privileges with `setuid` might be still able to perform a core dump. That is blocked here |
+| kernel.randomize_va_space = 2 | Randomize the memory address space which will prevent buffer overflow attacks |
+| net.ipv4.ip_forward = 0 | Disable network packet forwarding from one interface to another |
+| net.ipv4.conf.all.send_redirects = 0 | Disable accepting IPv4 ICMP redirected packets |
+| net.ipv4.conf.default.send_redirects = 0 | Disable accepting IPv4 ICMP redirected packets |
+| net.ipv4.conf.all.accept_source_route = 0 | Disable accepting source routed traffic |
+| net.ipv4.conf.default.accept_source_route = 0 | Disable accepting source routed traffic |
+| net.ipv4.conf.all.accept_redirects = 0 | Disable accepting ICMP redirects |
+| net.ipv4.conf.default.accept_redirects = 0 | Disable accepting ICMP redirects |
+| net.ipv4.conf.all.secure_redirects = 0 | Disable sending ICPM redirected packets |
+| net.ipv4.conf.default.secure_redirects = 0 | Disable sending ICPM redirected packets |
+| net.ipv4.conf.all.log_martians = 1 | Log all invalid packets received |
+| net.ipv4.conf.default.log_martians = 1 | Log all invalid packets received |
+| net.ipv4.conf.default.rp_filter = 1 | Strictly validate revers path forwarding |
+| net.ipv4.tcp_syncookies = 1 | Enable TCP SYN Cookies to prevent SYN Flooding attacks |
+| net.ipv4.icmp_echo_ignore_broadcasts = 1 | Ignore broadcasted ICMP (ping) requests |
+| net.ipv4.icmp_ignore_bogus_error_responses = 1 | Ignore bogus ICMP error messages |
+| net.ipv6.conf.all.accept_ra = 0 | Stop accepting IPv6 router advertisements |
+| net.ipv6.conf.default.accept_ra = 0 | Stop accepting IPv6 router advertisements |
+| net.ipv6.conf.all.accept_redirects = 0 | Stop accepting IPv6 redirects |
+| net.ipv6.conf.default.accept_redirects = 0 | Stop accepting IPv6 redirects |
+
+##### [ssh_banner](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/ssh_banner)
+This is just a warning banner that will be prompted to the users who are trying to SSH into the server. Feel free to edit it with a custom banner to match your Organizational policy.
+
+( -- more details to be added for the other files and scripts -- )
 
 ## Building the AMI
 Once the prerequisite are completed according to the [Blog Post](https://medium.com/cloud-life/building-a-cis-hardened-ami-on-aws-for-free-87b482b52ccb), run the following commands to Validate and Build the AMI.
