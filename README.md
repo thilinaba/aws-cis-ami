@@ -7,10 +7,10 @@ If you are new to Packer and AWS, Please refer to my [Blog Post](https://medium.
 ### Root directory
 This section describes the use of the files residing within the root directory of the repository.
 
-##### [cis-ami.pkr.hcl](https://github.com/thilinaba/aws-cis-ami/blob/dev/cis-ami.pkr.hcl)
+#### [cis-ami.pkr.hcl](https://github.com/thilinaba/aws-cis-ami/blob/dev/cis-ami.pkr.hcl)
 This is the Packer template which we used to run with Packer tool. For a basic build, we don't expect you to make any modifications to this file.
 
-##### [variables.json](https://github.com/thilinaba/aws-cis-ami/blob/dev/variables.json)
+#### [variables.json](https://github.com/thilinaba/aws-cis-ami/blob/dev/variables.json)
 This is the main variables file which allows you to customize the build accourding to your AWS account and region.  You need to customize the update the parameters of this file correctly, before you run the Packer Build. The definition and use of each variable is as follows.
 
 | Variable | Definition |
@@ -26,24 +26,24 @@ This is the main variables file which allows you to customize the build accourdi
 ### ./files directory
 We have a set of configuration files which configures the default [Amazon Linux 2](https://aws.amazon.com/amazon-linux-2/) OS with security hardening parameters that CIS Level 1 Benchmark suggests.
 
-##### [00-motd-warning](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/00-motd-warning)
+#### [00-motd-warning](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/00-motd-warning)
 
 This is just an SSH Login warning banner. We have added a very basic warning message here. You can customize this according to your organization's needs.
 
-##### [00-rsyslog-permissions.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/00-rsyslog-permissions.conf)
+#### [00-rsyslog-permissions.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/00-rsyslog-permissions.conf)
 
 This file sets a more private file permission level (mask) to the log files created by `rsyslog` service.
 
 Default value `$FileCreateMode 0600`
 
 
-##### [cis-limits.conf](cis-limits.conf)
+#### [cis-limits.conf](cis-limits.conf)
 This file [restricts core dumps](https://secscan.acron.pl/centos7/1/5/1) of the system.
 
 
-##### [cis-modprobe.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/cis-modprobe.conf)
+#### [cis-modprobe.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/cis-modprobe.conf)
 
-###### File system Level hardening
+##### File system Level hardening
 These configurations will disable uncommon / vulnerable filesystems from mounting to the system. Rmove the respective line if a particular filesystem is required within your system.
 | Config | Definition |
 | ------ | ------ |
@@ -55,7 +55,7 @@ These configurations will disable uncommon / vulnerable filesystems from mountin
 | install hfsplus /bin/true | Disable mounting `hfsplus` file system |
 | install udf /bin/true | Disable mounting `udf` file system |
 
-###### Network Level hardening
+##### Network Level hardening
 These configurations will disable uncommon / vulnerable network protocols from the system. Rmove the respective line if a particular protocol is required within your system.
 | Config | Definition |
 | ------ | ------ |
@@ -65,7 +65,7 @@ These configurations will disable uncommon / vulnerable network protocols from t
 | install rds /bin/true | Disable `Reliable Datagram Sockets (RDS)`. |
 | install tipc /bin/true | Disable `Transparent Inter-Process Communication (TIPC)`. |
 
-##### [cis-sysctl.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/cis-sysctl.conf)
+#### [cis-sysctl.conf](https://github.com/thilinaba/aws-cis-ami/blob/dev/files/cis-sysctl.conf)
 This file contains a set of kernel parameters which will secure system memory and network communications.
 
 Please note that the following networkng configurations (`net.ipv4`) are for IP version 4 protocol only. We use only IPv4 configurations here because we disabled IPv6 protocol from the system in above `cis-modprobe.conf` file. If you enable IPv6, make sure you add the relevant configs here in `cis-sysctl.conf`
